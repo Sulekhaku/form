@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example</title>
+    <style>
+        section.container{
+            max-width: 500px;
+            margin: 0 auto;
+            align-content: center;
+            height: calc(100vh - 17px);
+        }
+
+        .form__control{
+            margin-top: 10px;
+            width: 100%;
+        }
+
+        .form__control input[type="text"], input[type="email"], input[type="number"], input[type="website"] {
+            width: 95%;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+            color: #121212;
+            height: 20px;
+        }
+
+        input:focus-visible{
+            outline-offset: 0px;
+            outline: 1px solid burlywood;
+        }
+
+        .Form__container {
+            width: 100%;
+            padding: 46px 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .Form__container h4{
+            text-align: center;
+            font-size: 25px;
+            margin: 0;
+            margin-bottom: 20px;
+        }
+
+        .form__btn{
+            margin-top: 20px;
+        }
+
+        .form__btn input[type="button"]{
+            padding: 10px 20px;
+            background: #3b82f6;
+            color: #fff;
+            border: 1px solid #3b82f6;
+            border-radius: 5px;
+            cursor: pointer;
+
+        }
+    </style>
+</head>
+<body>
+    <section class="container">
+        <div class="Form__container">
+            <form>
+                <h4>Contact Form</h4>
+                <div class="form__control">
+                    <label>
+                        <input type="text" value="name" id="fname">
+                    </label>
+                </div>
+                <div class="form__control">
+                    <label>
+                        <input type="email" value="email" id="email">
+                    </label>
+                </div>
+                <div class="form__control">
+                    <label>
+                        <input type="number" value="number" id="number">
+                    </label>
+                </div>
+                <div class="form__control">
+                    <label>
+                        <input type="website" value="website" id="website" >
+                    </label>
+                </div>
+                <div class="form__btn">
+                    <input type="button" class="button" value="Submit" onclick="SubmitBtn()">
+                </div>
+            </form>
+        </div>
+    </section>
+    <script>
+       function SubmitBtn(){
+         var name = document.getElementById('fname').value;
+         var email = document.getElementById('email').value;
+         var number = document.getElementById('number').value;
+         var website = document.getElementById('website').value;
+
+         console.log("Name: " + name);
+         console.log("Email: " + email);
+         console.log("Number: " + number);
+         console.log("Website: " + website);  
+
+       }
+
+    </script>
+</body>
+</html>

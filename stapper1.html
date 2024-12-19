@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stapper</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- For check icon -->
+    <style>
+        :root {
+            --circle-size: clamp(1.5rem, 5vw, 3rem);
+            --spacing: clamp(0.25rem, 2vw, 0.5rem);
+        }
+
+        .c-stepper {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .c-stepper__item {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .c-stepper__item:before {
+            --size: 3rem;
+            content: "";
+            display: block;
+            width: var(--circle-size);
+            height: var(--circle-size);
+            border-radius: 50%;
+            background-color: lightgrey;
+            opacity: 0.5;
+            margin: 0 auto 1rem;
+            transition: background-color 0.3s, opacity 0.3s;
+        }
+
+        .c-stepper__item.completed:before {
+            background-color: green;
+            opacity: 1;
+            content: "\f00c"; /* Unicode for check icon (FontAwesome) */
+            font-family: "Font Awesome 5 Free";
+            font-weight: 900;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .c-stepper__item:not(:last-child):after {
+            content: "";
+            position: absolute;
+            top: calc(var(--circle-size) / 2);
+            width: calc(100% - var(--circle-size) - calc(var(--spacing) * 2));
+            left: calc(50% + calc(var(--circle-size) / 2 + var(--spacing)));
+            height: 2px;
+            background-color: #e0e0e0;
+            order: -1;
+        }
+
+        .c-stepper__item.active:before {
+            background-color: #4CAF50;
+            opacity: 1;
+        }
+
+        .c-stepper__title {
+            font-weight: bold;
+            font-size: clamp(1rem, 4vw, 1.25rem);
+            margin-bottom: 0.5rem;
+        }
+
+        .c-stepper__desc {
+            color: grey;
+            font-size: clamp(0.85rem, 2vw, 1rem);
+            padding-left: var(--spacing);
+            padding-right: var(--spacing);
+        }
+
+        /*** Non-demo CSS ***/
+        .wrapper {
+            max-width: 1000px;
+            margin: 2rem auto 0;
+        }
+        
+        .button-container {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        .next-button, .prev-button {
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin: 0 0.5rem;
+        }
+
+        .prev-button {
+            background-color: #2196F3; /* Blue for Previous Button */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <ul class="c-stepper">
+            <li class="c-stepper__item" id="step1">
+                <h3 class="c-stepper__title">Step 1</h3>
+            </li>
+            <li class="c-stepper__item" id="step2">
+                <h3 class="c-stepper__title">Step 2</h3>
+            </li>
+            <li class="c-stepper__item" id="step3">
+                <h3 class="c-stepper__title">Step 3</h3>
+            </li>
+        </ul>
+        <div class="button-container">
+            <button class="prev-button" id="prevButton" disabled>Previous</button>
+            <button class="next-button" id="nextButton">Next Step</button>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 1;
+
+        const steps = document.querySelectorAll('.c-stepper__item');
+        const nextButton = document.getElementById('nextButton');
+        const prevButton = document.getElementById('prevButton');
+
+        function updateStep() {
+            steps.forEach((step, index) => {
+                step.classList.remove('active', 'completed');
+                if (index < currentStep - 1) {
+                    step.classList.add('completed');
+                } else if (index === currentStep - 1) {
+                    step.classList.add('active');
+                }
+            });
+
+            // Update the previous and next buttons
+            if (currentStep === 1) {
+                prevButton.disabled = true;  // Disable Previous on Step 1
+            } else {
+                prevButton.disabled = false;
+            }
+
+            if (currentStep === steps.length) {
+                nextButton.disabled = true;  // Disable Next on the last step
+            } else {
+                nextButton.disabled = false;
+            }
+        }
+
+        nextButton.addEventListener('click', () => {
+            if (currentStep < steps.length) {
+                currentStep++;
+                updateStep();
+            }
+        });
+
+        prevButton.addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                updateStep();
+            }
+        });
+
+        // Initialize the first step
+        updateStep();
+    </script>
+</body>
+</html>

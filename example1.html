@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+      
+    
+    </style>
+</head>
+<body>
+    <form id="myTargetForm">
+        <input type="text" id="fname" value="Name"><br><br>
+        <input type="email" id="email" value="Email"><br><br>
+        <input type="text" id="address" value="Address"><br><br>
+        <input type="text" id="branch" value="branch"><br><br>
+        <button type="button" onclick="submitBtn()">Submit</button>
+    </form>
+   <div class="table">
+     <table id="table" cellspacing="3" cellpadding="3" border="1">
+      <thead>
+        <tr>
+          <td>Name</td>
+          <td>Email</td>
+          <td>Address</td>
+          <td>Branch</td>
+          <td>Edit</td>
+          <td>Delete</td>
+          <!-- <button type="button">edit</button>
+          <button type="button">Delete</button> -->
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+     </table>
+   </div>
+
+    <script>
+      var selectedRow = null;
+      function submitBtn(){
+        var name = document.getElementById("fname").value;
+        var email = document.getElementById("email").value;
+        var address = document.getElementById("address").value;
+        var branch = document.getElementById("branch").value;
+        // Create new table row //
+        var tableBody = document.getElementById("tbody");
+        var row = document.createElement("tr");
+        // Insert data into the row //
+        row.innerHTML = 
+        ` <td>${name}</td>
+          <td>${email}</td>
+          <td>${address}</td>
+          <td>${branch}</td>
+          <td><button type="button" onclick="editRow(this)">Edit</button></td>
+          <td><button type="button" onclick="delateRow(this)">Delete</button></td>`;
+
+          if(selectedRow === null){
+            tableBody.appendChild(row);
+          }else{
+            selectedRow.parentNode.replaceChild(row, selectedRow);
+          }
+          clearForm();
+         }
+
+         function editRow(button){
+             selectedRow = button.parentElement.parentElement;
+
+             document.getElementById("fname").value = selectedRow.cells[0].innerText;
+             document.getElementById("email").value = selectedRow.cells[1].innerText;
+             document.getElementById("address").value = selectedRow.cells[2].innerText;
+             document.getElementById("branch").value = selectedRow.cells[3].innerText;
+         }
+
+         function delateRow(button){
+           var row = button.parentElement.parentElement;
+           row.parentNode.removeChild(row);
+           clearForm();
+         }
+
+         function clearForm(){
+          document.getElementById("fname").value = '';
+          document.getElementById("email").value = '';
+          document.getElementById("address").value = '';
+          document.getElementById("branch").value = '';
+         }
+
+
+    </script>
+</body>
+</html>

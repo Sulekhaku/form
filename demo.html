@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        * {
+            border: 0;
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --hue: 223;
+            --bg: #e8e3e3;
+            --fg: #1c1717;
+            --primary: #910808;
+            --trans-dur: 0.3s;
+            --trans-timing: cubic-bezier(0.65, 0, 0.35, 1);
+            font-size: calc(16px + (48 - 16) * (100vw - 280px) / (3840 - 280));
+        }
+
+        body,
+        button {
+            font: 0.6666666667em "DM Sans", sans-serif;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--fg);
+            display: flex;
+            height: 100vh;
+        }
+
+        form {
+            container: form / inline-size;
+            margin: auto;
+            padding: 1.5em;
+            width: 100%;
+            max-width: 36em;
+        }
+
+        .btn {
+            background-color: var(--primary);
+            border-radius: 0.25em;
+            color: #fff;
+            cursor: pointer;
+            display: block;
+            padding: 0.375em 0.75em;
+            transition: background-color var(--trans-dur) var(--trans-timing), opacity var(--trans-dur) var(--trans-timing);
+            width: 100%;
+            -webkit-appearance: none;
+            appearance: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .btn:disabled {
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .btn:not(:disabled):hover {
+            background: #300303;
+        }
+
+        .btn-group {
+            display: flex;
+            justify-content: center;
+            gap: 0.75em;
+            margin-top: 1.5em;
+        }
+
+        .steps {
+            background-color: #fff;
+            border-radius: 0.75em;
+            display: flex;
+            padding: 1.5em;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+        }
+
+        .steps__connector,
+        .steps__step {
+            position: relative;
+        }
+
+        .steps__connector {
+            background-color: #d1c7c7;
+            margin-inline-start: 0.75em;
+            width: 0.125em;
+            height: 1.25em;
+            transform: translateX(-50%);
+            transition: background-color var(--trans-dur);
+        }
+
+        .steps__connector:before {
+            background-color: var(--primary);
+            content: "";
+            display: block;
+            width: 100%;
+            height: 100%;
+            transform: scale(1, 0);
+            transform-origin: 50% 0;
+            transition: background-color var(--trans-dur), transform var(--trans-dur) var(--trans-timing);
+        }
+
+        .steps__step {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            z-index: 1;
+        }
+
+        .steps__step-name {
+            color: #8c7373;
+            font-size: 0.75em;
+            line-height: 2;
+            transition: color var(--trans-dur) var(--trans-timing), font-weight var(--trans-dur) var(--trans-timing);
+        }
+
+        .steps__step-number {
+            background-color: #d1c7c7;
+            color: #fff;
+            border-radius: 50%;
+            margin-inline-end: 0.5em;
+            text-align: center;
+            width: 1.5em;
+            height: 1.5em;
+            transition: background-color var(--trans-dur) var(--trans-timing), box-shadow var(--trans-dur) var(--trans-timing);
+        }
+
+        .steps__step--current .steps__step-name,
+        .steps__step--done .steps__step-name {
+            color: #1c1717;
+            font-weight: 700;
+        }
+
+        .steps__step--current .steps__step-number,
+        .steps__step--done .steps__step-number {
+            background-color: var(--primary);
+        }
+
+        .steps__step--current .steps__step-number,
+        .steps__step--current .steps__step-name {
+            transition-delay: var(--trans-dur);
+        }
+
+        .steps__step--current .steps__step-number {
+            box-shadow: 0 0 0 0.125em rgba(145, 8, 8, 0.4);
+        }
+
+        .steps__step--done+.steps__connector:before {
+            transform: scale(1, 1);
+        }
+
+        /* Change layout depending on form width */
+        @container form (min-width: 30em) {
+            .btn {
+                width: auto;
+            }
+
+            .steps {
+                flex-direction: row;
+                align-items: center;
+                padding: 1.5em 2.25em 2.25em 2.25em;
+            }
+
+            .steps__connector {
+                margin-inline-start: 0;
+                width: 100%;
+                height: 0.125em;
+                transform: translateY(-50%);
+            }
+
+            .steps__connector:before {
+                transform: scale(0, 1);
+                transform-origin: 0 50%;
+            }
+
+            [dir="rtl"] .steps__connector:before {
+                transform-origin: 100% 50%;
+            }
+
+            .steps__step-name {
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                text-align: center;
+                width: 6em;
+                transform: translateX(-50%);
+            }
+
+            .steps__step-number {
+                margin-inline-end: 0;
+            }
+        }
+
+        /* Dark theme */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg: #1c1717;
+                --fg: #e8e3e3;
+                --primary: #f76e6e;
+            }
+
+            .btn {
+                color: #1c1717;
+            }
+
+            .btn:not(:disabled):hover {
+                background: #f20d0d;
+            }
+
+            .steps {
+                background-color: #382e2e;
+            }
+
+            .steps__connector {
+                background-color: #705c5c;
+            }
+
+            .steps__step-name {
+                color: #8c7373;
+            }
+
+            .steps__step-number {
+                background-color: #705c5c;
+                color: #382e2e;
+            }
+
+            .steps__step--current .steps__step-name,
+            .steps__step--done .steps__step-name {
+                color: #e8e3e3;
+            }
+
+            .steps__step--current .steps__step-number {
+                box-shadow: 0 0 0 0.125em rgba(247, 110, 110, 0.4);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <form>
+        <div class="steps">
+            <div class="steps__step" data-step="0">
+                <div class="steps__step-number">1</div>
+                <div class="steps__step-name">About You</div>
+            </div>
+            <div class="steps__connector"></div>
+            <div class="steps__step" data-step="1">
+                <div class="steps__step-number">2</div>
+                <div class="steps__step-name">About Book</div>
+            </div>
+            <div class="steps__connector"></div>
+            <div class="steps__step" data-step="2">
+                <div class="steps__step-number">3</div>
+                <div class="steps__step-name">Review</div>
+            </div>
+            <div class="steps__connector"></div>
+            <div class="steps__step" data-step="3">
+                <div class="steps__step-number">4</div>
+                <div class="steps__step-name">Signing</div>
+            </div>
+            <div class="steps__connector"></div>
+            <div class="steps__step" data-step="4">
+                <div class="steps__step-number">5</div>
+                <div class="steps__step-name">Contract</div>
+            </div>
+        </div>
+    </form>
+
+
+</body>
+
+</html>
